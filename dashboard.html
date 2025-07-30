@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+</head>
+<body class="bg-gray-50 p-8">
+    <div class="max-w-7xl mx-auto">
+        <!-- encabezado principal -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">Dashboard</h1>
+            <p class="text-gray-600">Bienvenido de nuevo, admin.</p>
+        </div>
+
+        <!-- tarjetas de metricas principales -->
+        <div class="grid grid-cols-4 gap-6 mb-8">
+            <!-- tarjeta usuarios totales -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-sm font-medium text-gray-500">Usuarios Totales</h3>
+                    <span class="text-green-600 text-sm font-medium">+12%</span>
+                </div>
+                <div class="text-3xl font-bold text-gray-900 mb-1">8,249</div>
+                <p class="text-sm text-gray-500">Aumentó 1,093 esta semana</p>
+            </div>
+
+            <!-- tarjeta de ingresos -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-sm font-medium text-gray-500">Ingresos</h3>
+                    <span class="text-green-600 text-sm font-medium">+8%</span>
+                </div>
+                <div class="text-3xl font-bold text-gray-900 mb-1">$24,780</div>
+                <p class="text-sm text-gray-500">$2,567 más que el mes pasado</p>
+            </div>
+
+            <!-- tarjeta sesiones activas -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-sm font-medium text-gray-500">Sesiones Activas</h3>
+                    <span class="text-red-600 text-sm font-medium">-3%</span>
+                </div>
+                <div class="text-3xl font-bold text-gray-900 mb-1">1,342</div>
+                <p class="text-sm text-gray-500">42 menos que ayer</p>
+            </div>
+
+            <!-- tarjeta tasa conversion -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-sm font-medium text-gray-500">Tasa de Conversión</h3>
+                    <span class="text-green-600 text-sm font-medium">+5%</span>
+                </div>
+                <div class="text-3xl font-bold text-gray-900 mb-1">24.8%</div>
+                <p class="text-sm text-gray-500">1.2% más que el promedio</p>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="grid grid-cols-2 gap-6">
+            <!-- Crecimiento de Usuarios -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Crecimiento de Usuarios</h3>
+                <div class="h-80">
+                    <canvas id="userGrowthChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Ingresos Mensuales -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Ingresos Mensuales</h3>
+                <div class="h-80">
+                    <canvas id="monthlyRevenueChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // configuracion general de las graficas
+        Chart.defaults.font.family = "'Inter', sans-serif";
+        Chart.defaults.color = '#6B7280';
+
+        // grafica de crecimiento de usuarios con lineas
+        const graficoUsuarios = document.getElementById('userGrowthChart').getContext('2d');
+        new Chart(graficoUsuarios, {
+            type: 'line',
+            data: {
+                labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                datasets: [
+                    {
+                        label: 'Usuarios 2024',
+                        data: [5000, 5500, 6200, 6800, 7200, 7600, 7800, 8000, 8300, 8500, 8700, 9000],
+                        borderColor: '#3B82F6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#3B82F6',
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 2,
+                        pointRadius: 5
+                    },
+                    {
+                        label: 'Usuarios 2023',
+                        data: [4000, 4300, 4600, 5000, 5300, 5600, 5800, 6000, 6200, 6400, 6600, 6800],
+                        borderColor: '#6B7280',
+                        backgroundColor: 'rgba(107, 114, 128, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#6B7280',
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 2,
+                        pointRadius: 5
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        align: 'start',
+                        labels: {
+                            usePointStyle: true,
+                            padding: 20
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: true,
+                            color: '#F3F4F6'
+                        },
+                        border: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        max: 10000,
+                        ticks: {
+                            stepSize: 1000,
+                            callback: function(valor) {
+                                return valor.toLocaleString();
+                            }
+                        },
+                        grid: {
+                            display: true,
+                            color: '#F3F4F6'
+                        },
+                        border: {
+                            display: false
+                        }
+                    }
+                },
+                elements: {
+                    point: {
+                        hoverRadius: 8
+                    }
+                }
+            }
+        });
+
+        // grafica de barras para ingresos del año
+        const graficoIngresos = document.getElementById('monthlyRevenueChart').getContext('2d');
+        new Chart(graficoIngresos, {
+            type: 'bar',
+            data: {
+                labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                datasets: [{
+                    label: 'Ingresos 2024 ($)',
+                    data: [15000, 16500, 18000, 19500, 21000, 22500, 23000, 24000, 25000, 26000, 27500, 29000],
+                    backgroundColor: '#3B82F6',
+                    borderRadius: 4,
+                    borderSkipped: false,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        align: 'start',
+                        labels: {
+                            usePointStyle: true,
+                            padding: 20
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        border: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        max: 30000,
+                        ticks: {
+                            stepSize: 5000,
+                            callback: function(valor) {
+                                return valor.toLocaleString();
+                            }
+                        },
+                        grid: {
+                            display: true,
+                            color: '#F3F4F6'
+                        },
+                        border: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
